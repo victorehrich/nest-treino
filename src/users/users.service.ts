@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CryptographyService } from 'src/cryptography/cryptography.service';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -9,6 +10,7 @@ import { User } from './entities/user.entity';
 export class UsersService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    private cryptographyService: CryptographyService,
   ) {}
   async findAll(name?: string): Promise<User[]> {
     return !!name
@@ -21,6 +23,9 @@ export class UsersService {
     else throw new Error('Usuário nâo encontrado');
   }
   async createUser(createUserDto: CreateUserDto): Promise<User> {
+    createUserDto.password = this.cryptographyService.encryptAESfunction(
+      createUserDto.password,
+    );
     const newUser = { ...createUserDto };
     return await this.userRepository.save(newUser);
   }
