@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { TodoList } from 'src/todo-list/entities/todo-list.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User {
@@ -18,8 +19,11 @@ export class User {
 
   @ApiProperty()
   @Column({ unique: true })
-  password:string
+  password: string;
 
   @Column({ default: true })
   isActive: boolean;
+
+  @OneToMany(() => TodoList, (todoList) => todoList.user)
+  todoList: TodoList[];
 }

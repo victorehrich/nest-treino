@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { config } from './db/ormConfig';
 import { AuthModule } from './auth/auth.module';
 import { CryptographyModule } from './cryptography/cryptography.module';
+import { TodoListModule } from './todo-list/todo-list.module';
+import { TodoItemModule } from './todo-item/todo-item.module';
 
 @Module({
   imports: [
@@ -13,6 +15,8 @@ import { CryptographyModule } from './cryptography/cryptography.module';
     UsersModule,
     AuthModule,
     CryptographyModule,
+    TodoListModule,
+    TodoItemModule,
   ],
   controllers: [AppController],
   providers: [AppService],

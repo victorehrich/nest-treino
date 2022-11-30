@@ -35,7 +35,10 @@ export class UsersService {
   }
   async removeUser(id: number): Promise<User> {
     const user = await this.findById(id);
-    return await this.userRepository.remove(user);
+    // eslint-disable-next-line prefer-const
+    let removeUser = user;
+    removeUser.isActive = false;
+    return await this.userRepository.save({ ...user, ...removeUser });
   }
   async findByEmail(email: string): Promise<User> {
     const user = await this.userRepository.findOneBy({ email: email });
