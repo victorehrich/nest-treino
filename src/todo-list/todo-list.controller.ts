@@ -43,14 +43,19 @@ export class TodoListController {
 
   @Patch(':id')
   update(
+    @Req() request,
     @Param('id') id: string,
     @Body() updateTodoListDto: UpdateTodoListDto,
   ) {
-    return this.todoListService.update(+id, updateTodoListDto);
+    return this.todoListService.update(
+      request.user.userId,
+      +id,
+      updateTodoListDto,
+    );
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.todoListService.remove(+id);
+  remove(@Req() request, @Param('id') id: string) {
+    return this.todoListService.remove(request.user.userId, +id);
   }
 }

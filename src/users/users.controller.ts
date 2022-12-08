@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -20,6 +21,7 @@ import {
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/strategies/jwt.auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
+import { GetUserListDto } from './dto/get-user-list.dto';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 
@@ -35,6 +37,14 @@ export class UsersController {
   @Get()
   async getUsers(@Query('name') name?: string): Promise<User[]> {
     return await this.usersService.findAll(name);
+  }
+  @ApiOkResponse()
+  @ApiNotFoundResponse()
+  @Get('/getAllUserList')
+  async getAllUserList(@Req() request): Promise<GetUserListDto> {
+    const user = await this.usersService.getAllUserList(request.user.userId);
+    if (!user) throw new NotFoundException();
+    return user;
   }
 
   @ApiOkResponse({ type: User, isArray: false })

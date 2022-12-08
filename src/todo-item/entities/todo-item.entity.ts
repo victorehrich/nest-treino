@@ -15,6 +15,6 @@ export class TodoItem {
   @Column({ default: true })
   priority: string;
 
-  @ManyToOne(() => TodoList, (todoList) => todoList.todoItem)
+  @ManyToOne(() => TodoList, (todoList) => todoList.todoItem, { eager: true })
   todoList: TodoList;
 }

@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { TodoItemService } from './todo-item.service';
 import { CreateTodoItemDto } from './dto/create-todo-item.dto';
@@ -22,13 +23,8 @@ export class TodoItemController {
   constructor(private readonly todoItemService: TodoItemService) {}
 
   @Post()
-  create(@Body() createTodoItemDto: CreateTodoItemDto) {
-    return this.todoItemService.create(createTodoItemDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.todoItemService.findAll();
+  create(@Req() request, @Body() createTodoItemDto: CreateTodoItemDto) {
+    return this.todoItemService.create(request.user.userId, createTodoItemDto);
   }
 
   @Get(':id')

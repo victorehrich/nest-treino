@@ -28,17 +28,39 @@ export class TodoListService {
   }
 
   async findOne(userId: number, id: number) {
-    const user = await this.usersService.findById(userId);
-    return await this.todoListRepository.findOne({
-      where: [{ user: user }, { id: id }],
-    });
+    try {
+      const user = await this.usersService.findById(userId);
+      const todoList = await this.todoListRepository.findOne({
+        where: [{ user: user }, { id: id }],
+      });
+      return todoList;
+    } catch (err) {
+      throw new Error('todoList not found');
+    }
   }
 
-  update(id: number, updateTodoListDto: UpdateTodoListDto) {
-    return `This action updates a #${id} todoList`;
+  async update(
+    userId: number,
+    id: number,
+    updateTodoListDto: UpdateTodoListDto,
+  ) {
+    try {
+      const todoList = await this.findOne(userId, id);
+      return await this.todoListRepository.save({
+        ...todoList,
+        ...updateTodoListDto,
+      });
+    } catch (err) {
+      throw new Error('todoList not found');
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} todoList`;
+  async remove(userId: number, id: number) {
+    try {
+      const todoList = await this.findOne(userId, id);
+      return await this.todoListRepository.remove(todoList);
+    } catch (err) {
+      throw new Error('todoList not found');
+    }
   }
 }
