@@ -29,7 +29,10 @@ export class TodoList {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @ManyToOne(() => User, (user) => user.todoList, { eager: true })
+  @ManyToOne(() => User, (user) => user.todoList, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
   user: User;
 
   @OneToMany(() => TodoItem, (TodoItem) => TodoItem.todoList)

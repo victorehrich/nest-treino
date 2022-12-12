@@ -12,9 +12,15 @@ export class TodoItem {
   @Column()
   description: string;
 
-  @Column({ default: true })
+  @Column()
   priority: string;
 
-  @ManyToOne(() => TodoList, (todoList) => todoList.todoItem, { eager: true })
+  @Column({ default: false })
+  done: boolean;
+
+  @ManyToOne(() => TodoList, (todoList) => todoList.todoItem, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
   todoList: TodoList;
 }

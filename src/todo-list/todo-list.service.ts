@@ -31,7 +31,7 @@ export class TodoListService {
     try {
       const user = await this.usersService.findById(userId);
       const todoList = await this.todoListRepository.findOne({
-        where: [{ user: user }, { id: id }],
+        where: [{ user: user, id: id }],
       });
       return todoList;
     } catch (err) {

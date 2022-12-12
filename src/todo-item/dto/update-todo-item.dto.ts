@@ -1,4 +1,16 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateTodoItemDto } from './create-todo-item.dto';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsBoolean, IsString } from 'class-validator';
 
-export class UpdateTodoItemDto extends PartialType(CreateTodoItemDto) {}
+export class UpdateTodoItemDto {
+  @ApiProperty()
+  @IsString()
+  description: string;
+
+  @IsString()
+  @ApiProperty()
+  priority: string;
+
+  @IsBoolean()
+  @ApiProperty()
+  done: boolean;
+}

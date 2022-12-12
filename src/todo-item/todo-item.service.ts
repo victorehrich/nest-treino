@@ -25,20 +25,31 @@ export class TodoItemService {
     throw new Error('Lista nâo encontradaa');
   }
 
-  async findOne(id: number) {
-    return await this.todoItemRepository.findOneBy({ id: id });
+  async findOne(userId: number, id: number) {
+    const todoList = await this.todoItemRepository
+      .createQueryBuilder('todoItem')
+      .innerJoinAndSelect('todoItem.todoList', 'todoList')
+      .innerJoin('todoList.user', 'user')
+      .where('user.id = :userId', { userId: userId })
+      .andWhere('todoItem.id = :todoItemId', { todoItemId: id })
+      .getOne();
+    return todoList;
   }
 
-  async update(id: number, updateTodoItemDto: UpdateTodoItemDto) {
-    const todoItem = await this.findOne(id);
+  async update(
+    userId: number,
+    id: number,
+    updateTodoItemDto: UpdateTodoItemDto,
+  ) {
+    const todoItem = await this.findOne(userId, id);
     return await this.todoItemRepository.save({
       ...todoItem,
       ...updateTodoItemDto,
     });
   }
 
-  async remove(id: number) {
-    const todoItem = await this.findOne(id);
+  async remove(userId: number, id: number) {
+    const todoItem = await this.findOne(userId, id);
     return await this.todoItemRepository.remove(todoItem);
   }
 }

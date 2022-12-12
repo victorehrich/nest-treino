@@ -28,20 +28,25 @@ export class TodoItemController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.todoItemService.findOne(+id);
+  findOne(@Req() request, @Param('id') id: string) {
+    return this.todoItemService.findOne(request.user.userId, +id);
   }
 
   @Patch(':id')
   update(
+    @Req() request,
     @Param('id') id: string,
     @Body() updateTodoItemDto: UpdateTodoItemDto,
   ) {
-    return this.todoItemService.update(+id, updateTodoItemDto);
+    return this.todoItemService.update(
+      request.user.userId,
+      +id,
+      updateTodoItemDto,
+    );
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.todoItemService.remove(+id);
+  remove(@Req() request, @Param('id') id: string) {
+    return this.todoItemService.remove(request.user.userId, +id);
   }
 }

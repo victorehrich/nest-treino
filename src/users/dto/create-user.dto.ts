@@ -23,10 +23,10 @@ export class CreateUserDto {
   @MinLength(6)
   @MaxLength(15)
   @Matches(
-    /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z])(?=.*[$*&@#]).*$/,
+    /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[$*&@#]).*$/,
     {
       message:
-        'Senha precisa de uma letra maiúscula, um caractere especial, pelo menos 6 caracteres e até 15 caracteres',
+        'Senha precisa de uma letra maiúscula, um número, um caractere especial, pelo menos 6 caracteres e até 15 caracteres',
     },
   )
   password: string;
